@@ -18,16 +18,20 @@ save_all_epochs = False
 seed = np.random.seed(seed)
 
 # Load aligned sequences
-_, msa_seqs = load_gzdata('data/training_data/luxafilt_llmsa_train.fa.gz', one_hot=False)
-_, val_msa_seqs = load_gzdata('data/training_data/luxafilt_llmsa_val.fa.gz', one_hot=False)
+#_, msa_seqs = load_gzdata('data/training_data/luxafilt_llmsa_train.fa.gz', one_hot=False)
+#_, val_msa_seqs = load_gzdata('data/training_data/luxafilt_llmsa_val.fa.gz', one_hot=False)
 
+_, msa_seqs = load_gzdata('data/training_data/cas9_train.fa.gz', one_hot=False)
+_, val_msa_seqs = load_gzdata('data/training_data/cas9_val.fa.gz', one_hot=False)
+
+og_dim = len(val_msa_seqs[0])
 # Define data generators
 train_gen = one_hot_generator(msa_seqs, padding=None)
 val_gen = one_hot_generator(val_msa_seqs, padding=None)
 
 # Define model
 print('Building model')
-model = MSAVAE(original_dim=360, latent_dim=10)
+model = MSAVAE(original_dim=og_dim, latent_dim=10)
 
 # (Optionally) define callbacks
 callbacks=[CSVLogger('output/logs/msavae.csv')]
